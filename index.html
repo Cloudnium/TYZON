@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TYZON</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #fff;
+    color: #222;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 1.2rem 2rem;
+    background: #fff;
+  }
+
+  nav a {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: #e8612a; }
+  nav a.active { color: #e8612a; }
+
+  /* HERO */
+  .hero {
+    background: #f0ead8;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dog-svg {
+    width: 90px;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .dash {
+    width: 28px;
+    height: 3px;
+    background: #222;
+    border-radius: 2px;
+    transform: rotate(-35deg);
+  }
+
+  .dash.right {
+    transform: rotate(35deg);
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #1a1a1a;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 1.8rem;
+  }
+
+  .btn-primary {
+    background: #e8612a;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .btn-primary:hover { background: #cf4f1e; transform: scale(1.03); }
+
+  /* Decorative paws and ball */
+  .paw {
+    position: absolute;
+    opacity: 0.55;
+  }
+
+  .paw svg { width: 36px; }
+  .paw.p1 { top: 38%; right: 10%; }
+  .paw.p2 { top: 55%; right: 8%; }
+  .paw.p3 { bottom: 10%; right: 5%; }
+  .paw.p4 { bottom: 5%; left: 6%; }
+
+  .ball {
+    position: absolute;
+    bottom: 8%;
+    left: 8%;
+    opacity: 0.5;
+  }
+  .ball svg { width: 44px; }
+
+  /* Dashed line going down from button */
+  .dashed-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 80px;
+    background: repeating-linear-gradient(to bottom, #888 0, #888 5px, transparent 5px, transparent 10px);
+  }
+
+  /* SOBRE MÍ */
+  .section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+  }
+
+  .section p {
+    color: #555;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding: 5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .about-img {
+    background: #f0ead8;
+    border-radius: 20px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-img svg {
+    width: 130px;
+    opacity: 0.8;
+  }
+
+  /* SERVICIOS */
+  .services-bg {
+    background: #f0ead8;
+    padding: 5rem 2rem;
+  }
+
+  .services-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .services-inner h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+    color: #1a1a1a;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+
+  .card:hover { transform: translateY(-4px); }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* CONTACTO */
+  .contact-section {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+
+  .contact-section h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-section p {
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+    padding: 0.8rem 1.1rem;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: #fafafa;
+  }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    border-color: #e8612a;
+  }
+
+  .contact-form textarea { height: 130px; resize: vertical; }
+
+  .contact-form button {
+    background: #e8612a;
+    color: #fff;
+    border: none;
+    padding: 0.85rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .contact-form button:hover { background: #cf4f1e; }
+
+  /* FOOTER */
+  footer {
+    background: #1a1a1a;
+    color: #aaa;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  footer span { color: #e8612a; }
+
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img { height: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#inicio" class="active" onclick="setActive(this)">Inicio</a>
+  <a href="#sobre" onclick="setActive(this)">Sobre mí</a>
+  <a href="#servicios" onclick="setActive(this)">Mis servicios</a>
+  <a href="#contacto" onclick="setActive(this)">Contacto</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <!-- Dog SVG -->
+  <svg class="dog-svg" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- ears -->
+    <ellipse cx="30" cy="30" rx="12" ry="18" fill="#fff" stroke="#222" stroke-width="2"/>
+    <ellipse cx="70" cy="30" rx="12" ry="18" fill="#fff" stroke="#222" stroke-width="2"/>
+    <!-- head -->
+    <ellipse cx="50" cy="48" rx="28" ry="26" fill="#fff" stroke="#222" stroke-width="2"/>
+    <!-- eye patch -->
+    <ellipse cx="38" cy="43" rx="10" ry="10" fill="#222"/>
+    <!-- eyes -->
+    <circle cx="38" cy="43" r="4" fill="#fff"/>
+    <circle cx="62" cy="43" r="4" fill="#fff" stroke="#222" stroke-width="1.5"/>
+    <!-- pupils -->
+    <circle cx="38" cy="43" r="2" fill="#222"/>
+    <circle cx="62" cy="43" r="2" fill="#222"/>
+    <!-- nose -->
+    <ellipse cx="50" cy="56" rx="5" ry="3.5" fill="#222"/>
+    <!-- mouth -->
+    <path d="M45 60 Q50 66 55 60" stroke="#222" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- body -->
+    <ellipse cx="50" cy="90" rx="22" ry="20" fill="#fff" stroke="#222" stroke-width="2"/>
+    <!-- tail -->
+    <path d="M72 88 Q88 78 84 66" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- legs -->
+    <rect x="33" y="104" width="9" height="14" rx="4" fill="#fff" stroke="#222" stroke-width="1.5"/>
+    <rect x="58" y="104" width="9" height="14" rx="4" fill="#fff" stroke="#222" stroke-width="1.5"/>
+  </svg>
+
+  <div class="hero-title-wrapper">
+    <div class="dash"></div>
+    <h1>TYZON</h1>
+    <div class="dash right"></div>
+  </div>
+
+  <p>Ayúdame a contactar a mi familia</p>
+  <button class="btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Vamos a pasear 🐾</button>
+
+  <!-- Decorative paws -->
+  <div class="paw p1">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="26" r="9" stroke="#555" stroke-width="1.5"/>
+      <circle cx="9" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="20" cy="10" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="31" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="paw p2">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="26" r="9" stroke="#555" stroke-width="1.5"/>
+      <circle cx="9" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="20" cy="10" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="31" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="paw p3">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="26" r="9" stroke="#555" stroke-width="1.5"/>
+      <circle cx="9" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="20" cy="10" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="31" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="paw p4">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="26" r="9" stroke="#555" stroke-width="1.5"/>
+      <circle cx="9" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="20" cy="10" r="4" stroke="#555" stroke-width="1.5"/>
+      <circle cx="31" cy="14" r="4" stroke="#555" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <!-- Ball -->
+  <div class="ball">
+    <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="25" cy="25" r="20" stroke="#555" stroke-width="1.5"/>
+      <path d="M12 14 Q25 28 38 14" stroke="#555" stroke-width="1.5" fill="none"/>
+      <path d="M12 36 Q25 22 38 36" stroke="#555" stroke-width="1.5" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="dashed-line"></div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="about-grid">
+    <div class="about-img">
+      <svg viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="42" cy="38" rx="16" ry="24" fill="#fff" stroke="#222" stroke-width="2"/>
+        <ellipse cx="118" cy="38" rx="16" ry="24" fill="#fff" stroke="#222" stroke-width="2"/>
+        <ellipse cx="80" cy="70" rx="40" ry="36" fill="#fff" stroke="#222" stroke-width="2"/>
+        <ellipse cx="66" cy="62" rx="13" ry="13" fill="#222"/>
+        <circle cx="66" cy="62" r="5" fill="#fff"/>
+        <circle cx="96" cy="62" r="5" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <circle cx="66" cy="62" r="2.5" fill="#222"/>
+        <circle cx="96" cy="62" r="2.5" fill="#222"/>
+        <ellipse cx="80" cy="79" rx="7" ry="5" fill="#222"/>
+        <path d="M72 86 Q80 95 88 86" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="80" cy="130" rx="32" ry="28" fill="#fff" stroke="#222" stroke-width="2"/>
+        <path d="M112 126 Q130 112 126 96" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <rect x="57" y="150" width="12" height="20" rx="6" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <rect x="91" y="150" width="12" height="20" rx="6" fill="#fff" stroke="#222" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div>
+      <h2>Hola, soy Tyzon 🐾</h2>
+      <p>Soy un perro lleno de energía y amor que busca a su familia. Me encanta correr, jugar y hacer nuevos amigos. Si me conoces o sabes algo de mí, por favor contáctame — mis dueños me extrañan mucho.</p>
+      <br>
+      <p>Tengo manchas únicas en mi carita y un espíritu aventurero. Cualquier ayuda para volver a casa es muy bienvenida. 🐕</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="services-bg">
+    <div class="services-inner">
+      <h2>Mis servicios</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🐾</div>
+          <h3>Paseos</h3>
+          <p>Ideal para perros que necesitan ejercicio y diversión al aire libre cada día.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏠</div>
+          <h3>Cuidado en casa</h3>
+          <p>Me puedo quedar con tus mascotas mientras viajas, en un ambiente hogareño.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛁</div>
+          <h3>Baño y aseo</h3>
+          <p>Servicio de limpieza básica para que tu perro siempre esté limpio y feliz.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎾</div>
+          <h3>Juegos y entrenamiento</h3>
+          <p>Actividades lúdicas y socialización para mantener a tu mascota estimulada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-section">
+    <h2>¿Me conoces?</h2>
+    <p>Si tienes información sobre mi familia o me viste por ahí, escríbenos. ¡Estamos esperando noticias!</p>
+    <div class="contact-form">
+      <input type="text" placeholder="Tu nombre" id="nombre"/>
+      <input type="email" placeholder="Tu correo electrónico" id="email"/>
+      <input type="text" placeholder="¿Dónde me viste?" id="lugar"/>
+      <textarea placeholder="Cuéntanos más..." id="mensaje"></textarea>
+      <button onclick="enviarForm()">Enviar mensaje 🐾</button>
+    </div>
+    <p id="msg-ok" style="color:#e8612a;margin-top:1rem;display:none;">¡Gracias! Tyzon y su familia te lo agradecen 🐕</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Hecho con <span>♥</span> para que Tyzon vuelva a casa · 2025
+</footer>
+
+<script>
+  function setActive(el) {
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function enviarForm() {
+    const nombre = document.getElementById('nombre').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if (!nombre || !email) {
+      alert('Por favor completa tu nombre y correo.');
+      return;
+    }
+    document.getElementById('msg-ok').style.display = 'block';
+    document.getElementById('nombre').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('lugar').value = '';
+    document.getElementById('mensaje').value = '';
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const link = document.querySelector(`nav a[href="#${id}"]`);
+        if (link) {
+          document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+          link.classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  ['inicio','sobre','servicios','contacto'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+</script>
+</body>
+</html>
